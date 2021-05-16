@@ -109,11 +109,7 @@ loader.load(arr[textureToShow], function(tex) {
 const avatarHeadGeometry = new THREE.SphereGeometry(1, 16, 16);
 const avatarHeadMaterial = new THREE.MeshPhongMaterial({color: 0xFFDD00});
 const avatarHeadMesh = new THREE.Mesh(avatarHeadGeometry, avatarHeadMaterial);
-avatarHeadMesh.rotation.x = Math.PI * 0.5;
-avatarHeadMesh.position.y = 3;
-avatarHeadMesh.position.z = 0.4;
 avatarHeadMesh.castShadow = true;
-//avatarMesh.add(avatarHeadMesh);
 
 const avatarFov = 90;
 const avatarCamera = makeCamera(avatarFov);
