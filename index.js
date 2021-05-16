@@ -87,14 +87,14 @@ const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
 avatarMesh.castShadow = true;
-avatar.add(avatarMesh);
+//avatar.add(avatarMesh);
 loader.load(arr[textureToShow], function(tex) {
   // Once the texture has loaded, assign it to the material
   avatarMaterial.map = tex;
   // Update the next texture to show
   textureToShow++;
   // Add the mesh into the scene
-  // scene.add(avatarMesh);
+  scene.add(avatarMesh);
   });
   canvas.addEventListener("click", function() {
     loader.load(arr[textureToShow], function(tex) {
@@ -113,7 +113,7 @@ avatarHeadMesh.rotation.x = Math.PI * 0.5;
 avatarHeadMesh.position.y = 3;
 avatarHeadMesh.position.z = 0.4;
 avatarHeadMesh.castShadow = true;
-avatarMesh.add(avatarHeadMesh);
+//avatarMesh.add(avatarHeadMesh);
 
 const avatarFov = 90;
 const avatarCamera = makeCamera(avatarFov);
@@ -155,8 +155,8 @@ trainCamera.rotation.y = Math.PI;
 bodyMesh.add(trainCamera);
 
 const wheelRadius = 1;
-const wheelThickness = .5;
-const wheelSegments = 6;
+const wheelThickness = .25;
+const wheelSegments =16;
 const wheelGeometry = new THREE.CylinderGeometry(
     wheelRadius,     // top radius
     wheelRadius,     // bottom radius
