@@ -1,4 +1,5 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js';
 
 const canvas = document.querySelector('#c');
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
@@ -16,7 +17,14 @@ const camera = makeCamera();
 camera.position.set(8, 4, 10).multiplyScalar(3);
 camera.lookAt(0, 0, 0);
 
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, 5, 0);
+controls.update();
+
+var arr = ['img_avatar.png','img_avatar2.png','avatar6.png'];
 const scene = new THREE.Scene();
+scene.background = new THREE.Color('blue');
+const loader = new THREE.TextureLoader();
 
 {
   const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -42,8 +50,17 @@ const scene = new THREE.Scene();
   scene.add(light);
 }
 
+const texture = loader.load('grass.png')
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+texture.magFilter = THREE.NearestFilter;
+const repeats = 25;
+texture.repeat.set(repeats, repeats);
 const groundGeometry = new THREE.PlaneGeometry(50, 50);
-const groundMaterial = new THREE.MeshPhongMaterial({color: 0xCC8866});
+const groundMaterial = new THREE.MeshPhongMaterial({
+  map: texture,
+  side: THREE.DoubleSide,
+});
 const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
 groundMesh.rotation.x = Math.PI * -.5;
 groundMesh.receiveShadow = true;
@@ -64,19 +81,37 @@ avatar.name = 'avatar';
 avatar.userData.bb = new THREE.Box3(new THREE.Vector3(-0.8,0,-0.8), new THREE.Vector3(0.8,4,0.8));
 scene.add(avatar);
 
-const avatarGeometry = new THREE.CylinderGeometry(0.3, 0.5, 4, 10);
-const avatarMaterial = new THREE.MeshPhongMaterial({color: 0xFF00DD});
+var textureToShow = 0;
+const avatarGeometry = new THREE.CylinderGeometry(1, 2, 4, 32);
+const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
 avatarMesh.castShadow = true;
 avatar.add(avatarMesh);
+loader.load(arr[textureToShow], function(tex) {
+  // Once the texture has loaded, assign it to the material
+  avatarMaterial.map = tex;
+  // Update the next texture to show
+  textureToShow++;
+  // Add the mesh into the scene
+  // scene.add(avatarMesh);
+  });
+  canvas.addEventListener("click", function() {
+    loader.load(arr[textureToShow], function(tex) {
+     avatarMaterial.map = tex;
+     textureToShow++;
+     if(textureToShow > arr.length-1) {
+      textureToShow = 0;
+     }
+    }); 
+   }); 
 
-const avatarHeadGeometry = new THREE.CylinderGeometry(0.01, 0.5, 1, 6);
+const avatarHeadGeometry = new THREE.SphereGeometry(1, 16, 16);
 const avatarHeadMaterial = new THREE.MeshPhongMaterial({color: 0xFFDD00});
 const avatarHeadMesh = new THREE.Mesh(avatarHeadGeometry, avatarHeadMaterial);
 avatarHeadMesh.rotation.x = Math.PI * 0.5;
-avatarHeadMesh.position.y = 2;
-avatarHeadMesh.position.z = 0.2;
+avatarHeadMesh.position.y = 3;
+avatarHeadMesh.position.z = 0.4;
 avatarHeadMesh.castShadow = true;
 avatarMesh.add(avatarHeadMesh);
 
@@ -94,9 +129,17 @@ const carLength = 8;
 const coach = new THREE.Object3D();
 coach.userData.hasBB = true;
 // scene.add(coach);
-
+//const box = loader.load('train_front.png','train_front.png','train_side.png','train_side.png','train_side.png','train_side.png',)
 const bodyGeometry = new THREE.BoxGeometry(carWidth, carHeight, carLength);
-const bodyMaterial = new THREE.MeshPhongMaterial({color: 0x6688AA});
+const bodyMaterial = [
+  new THREE.MeshBasicMaterial({map: loader.load('train_side.png')}),
+  new THREE.MeshBasicMaterial({map: loader.load('train_side.png')}),
+  new THREE.MeshBasicMaterial({map: loader.load('train_top.png')}),
+  new THREE.MeshBasicMaterial({map: loader.load('train_top.png')}),
+  new THREE.MeshBasicMaterial({map: loader.load('train_front.png')}),
+  new THREE.MeshBasicMaterial({map: loader.load('train_front.png')}),
+];
+//const bodyMaterial = new THREE.MeshPhongMaterial({map: box});
 const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
 bodyMesh.name = 'cb';
 bodyMesh.position.y = 3;
@@ -119,7 +162,8 @@ const wheelGeometry = new THREE.CylinderGeometry(
     wheelRadius,     // bottom radius
     wheelThickness,  // height of cylinder
     wheelSegments);
-const wheelMaterial = new THREE.MeshPhongMaterial({color: 0x888888});
+const wheeltex = loader.load('wheel.png')
+const wheelMaterial = new THREE.MeshPhongMaterial({map: wheeltex});
 const wheelPositions = [
   [-carWidth / 2 - wheelThickness / 2, -carHeight / 2,  carLength / 3],
   [ carWidth / 2 + wheelThickness / 2, -carHeight / 2,  carLength / 3],
@@ -141,7 +185,9 @@ const wheelMeshes = wheelPositions.map((position, index) => {
 const engine = coach.clone(true);
 engine.name = 'eng';
 const domeGeometry = new THREE.SphereGeometry(2, 10, 10, 0, Math.PI*2, 0, Math.PI * 0.5);
-const domeMesh = new THREE.Mesh(domeGeometry, bodyMaterial);
+const dometex = loader.load('dome.png')
+const domeMaterial = new THREE.MeshPhongMaterial({color: 0x888888, map: dometex})
+const domeMesh = new THREE.Mesh(domeGeometry, domeMaterial);
 domeMesh.castShadow = true;
 console.log(engine);
 engine.getObjectById(32).add(domeMesh);
@@ -393,6 +439,7 @@ window.addEventListener('keydown', function (event){
       if(!isAvatarAttached){
         avatar.position.set(0,2,2);
         engine.add(avatar);
+        isAvatarJumping = false;
       }else{
         engine.remove(avatar);
         avatar.position.copy(engine.position);
