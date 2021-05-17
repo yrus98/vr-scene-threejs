@@ -1,31 +1,40 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js';
 
+//sets the canvas
 const canvas = document.querySelector('#c');
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
 let currCamera = 0;
 renderer.setClearColor(0xAAAAAA);
 renderer.shadowMap.enabled = true;
 
+//camera function
 function makeCamera(fov = 40) {
   const aspect = 2;  // the canvas default
   const zNear = 0.1;
   const zFar = 1000;
   return new THREE.PerspectiveCamera(fov, aspect, zNear, zFar);
 }
+
+//sets the camera
 const camera = makeCamera();
 camera.position.set(8, 4, 10).multiplyScalar(3);
 camera.lookAt(0, 0, 0);
 
+//orbit controls
 const controls = new OrbitControls(camera, canvas);
 controls.target.set(0, 5, 0);
 controls.update();
 
+//array of options for avatar's texture
 var arr = ['img_avatar.png','img_avatar2.png','avatar6.png'];
+
+//sets scene, texture loader and background colour to blue
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('blue');
 const loader = new THREE.TextureLoader();
 
+//defines light, default light is directional light
 {
   const light = new THREE.DirectionalLight(0xffffff, 1);
   light.position.set(0, 20, 0);
@@ -50,6 +59,7 @@ const loader = new THREE.TextureLoader();
   scene.add(light);
 }
 
+//ground mesh and its geometry and texture
 const texture = loader.load('grass.png')
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
@@ -66,7 +76,7 @@ groundMesh.rotation.x = Math.PI * -.5;
 groundMesh.receiveShadow = true;
 scene.add(groundMesh);
 
-
+//avatar variables
 let isAvatarAttached = false;
 let isAvatarMoving = false;
 
@@ -96,6 +106,7 @@ loader.load(arr[textureToShow], function(tex) {
   // Add the mesh into the scene
   scene.add(avatarMesh);
   });
+  //function to change avatar texture with click
   canvas.addEventListener("click", function() {
     loader.load(arr[textureToShow], function(tex) {
      avatarMaterial.map = tex;
@@ -111,13 +122,44 @@ const avatarHeadMaterial = new THREE.MeshPhongMaterial({color: 0xFFDD00});
 const avatarHeadMesh = new THREE.Mesh(avatarHeadGeometry, avatarHeadMaterial);
 avatarHeadMesh.castShadow = true;
 
+//camera attached to avatar
 const avatarFov = 90;
 const avatarCamera = makeCamera(avatarFov);
 avatarCamera.position.y = 4;
 avatarCamera.rotation.y = Math.PI;
 avatar.add(avatarCamera);
 
+//trees
+const treeGeometry = new THREE.ConeGeometry(1.5, 5, 32);
+const treeMaterial = new THREE.MeshPhongMaterial({map: loader.load('tree.png')});
+const treeMesh1 = new THREE.Mesh(treeGeometry, treeMaterial);
+treeMesh1.position.y = 2.5;
+treeMesh1.position.x = 23;
+treeMesh1.position.z = 23;
+treeMesh1.castShadow = true;
+scene.add(treeMesh1);
+/* 
+const treeMesh2 = new THREE.Mesh(treeGeometry, treeMaterial);
+treeMesh2.position.y = 1.5;
+treeMesh2.position.x = -24;
+treeMesh2.position.z = 24;
+treeMesh2.castShadow = true;
+scene.add(treeMesh2);
 
+const treeMesh3 = new THREE.Mesh(treeGeometry, treeMaterial);
+treeMesh3.position.y = 1.5;
+treeMesh3.position.x = 24;
+treeMesh3.position.z = -24;
+treeMesh3.castShadow = true;
+scene.add(treeMesh3);
+
+const treeMesh4 = new THREE.Mesh(treeGeometry, treeMaterial);
+treeMesh4.position.y = 1.5;
+treeMesh4.position.x = -24;
+treeMesh4.position.z = -24;
+treeMesh4.castShadow = true;
+scene.add(treeMesh4); */
+//defining the train mesh
 const carWidth = 4;
 const carHeight = 4;
 const carLength = 8;
@@ -128,12 +170,12 @@ coach.userData.hasBB = true;
 //const box = loader.load('train_front.png','train_front.png','train_side.png','train_side.png','train_side.png','train_side.png',)
 const bodyGeometry = new THREE.BoxGeometry(carWidth, carHeight, carLength);
 const bodyMaterial = [
-  new THREE.MeshBasicMaterial({map: loader.load('train_side.png')}),
-  new THREE.MeshBasicMaterial({map: loader.load('train_side.png')}),
-  new THREE.MeshBasicMaterial({map: loader.load('train_top.png')}),
-  new THREE.MeshBasicMaterial({map: loader.load('train_top.png')}),
-  new THREE.MeshBasicMaterial({map: loader.load('train_front.png')}),
-  new THREE.MeshBasicMaterial({map: loader.load('train_front.png')}),
+  new THREE.MeshPhongMaterial({map: loader.load('train_side.png')}),
+  new THREE.MeshPhongMaterial({map: loader.load('train_side.png')}),
+  new THREE.MeshPhongMaterial({map: loader.load('train_top.png')}),
+  new THREE.MeshPhongMaterial({map: loader.load('train_top.png')}),
+  new THREE.MeshPhongMaterial({map: loader.load('train_front.png')}),
+  new THREE.MeshPhongMaterial({map: loader.load('train_front.png')}),
 ];
 //const bodyMaterial = new THREE.MeshPhongMaterial({map: box});
 const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
@@ -143,6 +185,7 @@ bodyMesh.castShadow = true;
 bodyMesh.geometry.computeBoundingBox();
 coach.add(bodyMesh);
 
+//camera on top of the train
 const trainCameraFov = 75;
 const trainCamera = makeCamera(trainCameraFov);
 trainCamera.position.y = 3;
@@ -246,6 +289,7 @@ for (let i = 0; i < noOfCoaches; i++) {
 // targetCameraPivot.add(targetCamera);
 
 // Create a sine-like wave
+//train path
 const splinePointsArr = [
   new THREE.Vector2( -20, -20 ),
   new THREE.Vector2( 20, 20 ),
