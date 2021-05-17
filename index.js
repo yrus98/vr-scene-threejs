@@ -97,14 +97,13 @@ const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
 avatarMesh.castShadow = true;
-//avatar.add(avatarMesh);
 loader.load(arr[textureToShow], function(tex) {
   // Once the texture has loaded, assign it to the material
   avatarMaterial.map = tex;
   // Update the next texture to show
   textureToShow++;
   // Add the mesh into the scene
-  scene.add(avatarMesh);
+  avatar.add(avatarMesh);
   });
   //function to change avatar texture with click
   canvas.addEventListener("click", function() {
@@ -138,7 +137,7 @@ treeMesh1.position.x = 23;
 treeMesh1.position.z = 23;
 treeMesh1.castShadow = true;
 scene.add(treeMesh1);
-/* 
+
 const treeMesh2 = new THREE.Mesh(treeGeometry, treeMaterial);
 treeMesh2.position.y = 1.5;
 treeMesh2.position.x = -24;
@@ -158,7 +157,8 @@ treeMesh4.position.y = 1.5;
 treeMesh4.position.x = -24;
 treeMesh4.position.z = -24;
 treeMesh4.castShadow = true;
-scene.add(treeMesh4); */
+scene.add(treeMesh4);
+
 //defining the train mesh
 const carWidth = 4;
 const carHeight = 4;
@@ -229,7 +229,7 @@ const domeMaterial = new THREE.MeshPhongMaterial({color: 0x888888, map: dometex}
 const domeMesh = new THREE.Mesh(domeGeometry, domeMaterial);
 domeMesh.castShadow = true;
 console.log(engine);
-engine.getObjectById(32).add(domeMesh);
+engine.getObjectByName('cb').add(domeMesh);
 domeMesh.position.y = 2;
 domeMesh.position.z = -2;
 
