@@ -93,7 +93,7 @@ avatar.userData.bb = new THREE.Box3(new THREE.Vector3(-0.8,0,-0.8), new THREE.Ve
 scene.add(avatar);
 
 var textureToShow = 0;
-const avatarGeometry = new THREE.CylinderGeometry(1, 2, 4, 32);
+const avatarGeometry = new THREE.CylinderGeometry(1, 1, 4, 32);
 const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
@@ -226,7 +226,7 @@ const engine = coach.clone(true);
 engine.name = 'eng';
 const domeGeometry = new THREE.SphereGeometry(2, 10, 10, 0, Math.PI*2, 0, Math.PI * 0.5);
 const dometex = loader.load('dome.png')
-const domeMaterial = new THREE.MeshPhongMaterial({color: 0x888888, map: dometex})
+const domeMaterial = new THREE.MeshBasicMaterial({color: 0x888888, map: dometex})
 const domeMesh = new THREE.Mesh(domeGeometry, domeMaterial);
 domeMesh.castShadow = true;
 console.log(engine);
