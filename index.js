@@ -66,13 +66,14 @@ texture.wrapT = THREE.RepeatWrapping;
 texture.magFilter = THREE.NearestFilter;
 const repeats = 25;
 texture.repeat.set(repeats, repeats);
-const groundGeometry = new THREE.PlaneGeometry(50, 50);
+// const groundGeometry = new THREE.PlaneGeometry(50, 50);
+const groundGeometry = new THREE.CylinderGeometry(50, 50, 0.1, 16);
 const groundMaterial = new THREE.MeshPhongMaterial({
   map: texture,
   side: THREE.DoubleSide,
 });
 const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-groundMesh.rotation.x = Math.PI * -.5;
+// groundMesh.rotation.x = Math.PI * -.5;
 groundMesh.receiveShadow = true;
 scene.add(groundMesh);
 
