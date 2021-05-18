@@ -101,6 +101,8 @@ const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
 avatarMesh.castShadow = true;
+avatarMesh.rotation.y = Math.PI;
+
 loader.load(avatarbody[textureToShow1], function(tex) {
   // Once the texture has loaded, assign it to the material
   avatarMaterial.map = tex;
@@ -127,6 +129,7 @@ const avatarHeadMesh = new THREE.Mesh(avatarHeadGeometry, avatarHeadMaterial);
 avatarHeadMesh.castShadow = true;
 avatarHeadMesh.position.y = 5;
 avatarHeadMesh.position.z = 0.1;
+avatarHeadMesh.rotation.y = -Math.PI/2;
 //avatar.add(avatarHeadMesh);
 loader.load(avatarface[textureToShow2], function(tex2) {
   // Once the texture has loaded, assign it to the material
