@@ -27,7 +27,8 @@ controls.target.set(0, 5, 0);
 controls.update();
 
 //array of options for avatar's texture
-var arr = ['img_avatar.png','img_avatar2.png','avatar6.png'];
+var avatarface = ['orange_avatar.png','blue_avatar.png','green_avatar.png'];
+var avatarbody = ['orange_shirt.png','blue_shirt.png','green_shirt.png'];
 
 //sets scene, texture loader and background colour to blue
 const scene = new THREE.Scene();
@@ -93,39 +94,58 @@ avatar.userData.bb = new THREE.Box3(new THREE.Vector3(-0.8,0,-0.8), new THREE.Ve
 avatar.position.z = -20;
 scene.add(avatar);
 
-var textureToShow = 0;
+var textureToShow1 = 0;
 // const avatarGeometry = new THREE.CylinderGeometry(1, 1, 4, 32);
 const avatarGeometry = new THREE.CylinderGeometry(0.5, 1.5, 4, 32);
 const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
 avatarMesh.castShadow = true;
-loader.load(arr[textureToShow], function(tex) {
+loader.load(avatarbody[textureToShow1], function(tex) {
   // Once the texture has loaded, assign it to the material
   avatarMaterial.map = tex;
   // Update the next texture to show
-  textureToShow++;
+  textureToShow1++;
   // Add the mesh into the scene
   avatar.add(avatarMesh);
   });
   //function to change avatar texture with click
   canvas.addEventListener("click", function() {
-    loader.load(arr[textureToShow], function(tex) {
+    loader.load(avatarbody[textureToShow1], function(tex) {
      avatarMaterial.map = tex;
-     textureToShow++;
-     if(textureToShow > arr.length-1) {
-      textureToShow = 0;
+     textureToShow1++;
+     if(textureToShow1 > avatarbody.length-1) {
+      textureToShow1 = 0;
      }
     }); 
    }); 
 
+var textureToShow2 = 0;
 const avatarHeadGeometry = new THREE.SphereGeometry(1, 16, 16);
-const avatarHeadMaterial = new THREE.MeshPhongMaterial({color: 0xFFDD00});
+const avatarHeadMaterial = new THREE.MeshPhongMaterial();
 const avatarHeadMesh = new THREE.Mesh(avatarHeadGeometry, avatarHeadMaterial);
 avatarHeadMesh.castShadow = true;
 avatarHeadMesh.position.y = 5;
 avatarHeadMesh.position.z = 0.1;
-avatar.add(avatarHeadMesh);
+//avatar.add(avatarHeadMesh);
+loader.load(avatarface[textureToShow2], function(tex2) {
+  // Once the texture has loaded, assign it to the material
+  avatarHeadMaterial.map = tex2;
+  // Update the next texture to show
+  textureToShow2++;
+  // Add the mesh into the scene
+  avatar.add(avatarHeadMesh);
+  });
+  //function to change avatar texture with click
+  canvas.addEventListener("click", function() {
+    loader.load(avatarface[textureToShow2], function(tex2) {
+     avatarHeadMaterial.map = tex2;
+     textureToShow2++;
+     if(textureToShow2 > avatarface.length-1) {
+      textureToShow2 = 0;
+     }
+    }); 
+   }); 
 
 //camera attached to avatar
 const avatarFov = 90;
