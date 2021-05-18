@@ -90,10 +90,12 @@ let currJumpForce = 0;
 const avatar = new THREE.Object3D();
 avatar.name = 'avatar';
 avatar.userData.bb = new THREE.Box3(new THREE.Vector3(-0.8,0,-0.8), new THREE.Vector3(0.8,4,0.8));
+avatar.position.z = -20;
 scene.add(avatar);
 
 var textureToShow = 0;
-const avatarGeometry = new THREE.CylinderGeometry(1, 1, 4, 32);
+// const avatarGeometry = new THREE.CylinderGeometry(1, 1, 4, 32);
+const avatarGeometry = new THREE.CylinderGeometry(0.5, 1.5, 4, 32);
 const avatarMaterial = new THREE.MeshPhongMaterial();
 const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
 avatarMesh.position.y = 2;
@@ -121,6 +123,9 @@ const avatarHeadGeometry = new THREE.SphereGeometry(1, 16, 16);
 const avatarHeadMaterial = new THREE.MeshPhongMaterial({color: 0xFFDD00});
 const avatarHeadMesh = new THREE.Mesh(avatarHeadGeometry, avatarHeadMaterial);
 avatarHeadMesh.castShadow = true;
+avatarHeadMesh.position.y = 5;
+avatarHeadMesh.position.z = 0.1;
+avatar.add(avatarHeadMesh);
 
 //camera attached to avatar
 const avatarFov = 90;
