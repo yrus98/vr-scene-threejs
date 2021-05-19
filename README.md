@@ -22,3 +22,7 @@
 `c` : Toggle Camera [Fixed / Avatar POV]
 
 `Mouse Drag` : Camera Orbital Controls
+
+### Light controls
+`o/p` `i/u` `l/k` `j/h` - enable diable lights
+

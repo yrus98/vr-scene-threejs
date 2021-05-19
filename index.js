@@ -3,6 +3,7 @@ import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/t
 
 //sets the canvas
 const canvas = document.querySelector('#c');
+const keylogger = document.getElementById('key');
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
 let currCamera = 0;
 renderer.setClearColor(0xAAAAAA);
@@ -67,16 +68,15 @@ const loader = new THREE.TextureLoader();
 
   var pointLight = new THREE.PointLight(0x8B008B);
   
-  const pointlight2 = new THREE.PointLight( 0xFFFFFF);
+  var pointlight2 = new THREE.PointLight( 0xFFFFFF);
   pointlight2.position.set(-24,3,24);
   pointlight2.castShadow = true;
   scene.add(pointlight2);
 
-  const pointlight3 = new THREE.PointLight( 0xFFFFFF);
+  var pointlight3 = new THREE.PointLight( 0xFFFFFF);
   pointlight3.position.set(-24,4,-24);
   pointlight3.castShadow = false;
-  scene.add(pointlight3);
-  
+  scene.add(pointlight3);  
 
 }
 
@@ -104,6 +104,10 @@ const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
 // groundMesh.rotation.x = Math.PI * -.5;
 groundMesh.receiveShadow = true;
 scene.add(groundMesh);
+
+//light switch
+let lightSwitchON = false;
+let lightSwitchOFF = false;
 
 //avatar variables
 let isAvatarAttached = false;
@@ -187,33 +191,33 @@ pointLight.position.copy(avatar.position);
 avatarCamera.add(pointLight);
 
 //trees
-const treeGeometry = new THREE.ConeGeometry(2.5, 15, 32);
+const treeGeometry = new THREE.ConeGeometry(1.5, 5, 32);
 const treeMaterial = new THREE.MeshPhongMaterial({map: loader.load('tree.png')});
 const treeMesh1 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh1.position.y = 7.5;
-treeMesh1.position.x = 25;
-treeMesh1.position.z = 25;
+treeMesh1.position.y = 2.5;
+treeMesh1.position.x = 24;
+treeMesh1.position.z = 24;
 treeMesh1.castShadow = true;
 scene.add(treeMesh1);
 
 const treeMesh2 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh2.position.y =7.5;
-treeMesh2.position.x = -25;
-treeMesh2.position.z = 25;
+treeMesh2.position.y = 2.5;
+treeMesh2.position.x = -24;
+treeMesh2.position.z = 24;
 treeMesh2.castShadow = true;
 scene.add(treeMesh2);
 
 const treeMesh3 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh3.position.y = 7.5;
-treeMesh3.position.x = 25;
-treeMesh3.position.z = -25;
+treeMesh3.position.y = 2.5;
+treeMesh3.position.x = 24;
+treeMesh3.position.z = -24;
 treeMesh3.castShadow = true;
 scene.add(treeMesh3);
 
 const treeMesh4 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh4.position.y = 7.5;
-treeMesh4.position.x = -25;
-treeMesh4.position.z = -25;
+treeMesh4.position.y = 2.5;
+treeMesh4.position.x = -24;
+treeMesh4.position.z = -24;
 treeMesh4.castShadow = true;
 scene.add(treeMesh4);
 
@@ -518,7 +522,56 @@ function render(time) {
 }
 
 window.addEventListener('keydown', function (event){
+  keylogger.innerText = (event.key!=' ')? event.key:'space';
   switch(event.key){
+    case 'p':
+    if(!lightSwitchON)
+      spotlight.position.x = 24000;
+      lightSwitchOFF = false;
+      lightSwitchON = true;
+      break;
+    case 'o':
+    if(!lightSwitchOFF)
+      spotlight.position.x = 24;
+      lightSwitchON = false;
+      lightSwitchOFF = true;
+      break;
+    case 'i':
+    if(!lightSwitchON)
+      pointLight.position.x = -24000;
+      lightSwitchOFF = false;
+      lightSwitchON = true;
+      break;
+    case 'u':
+    if(!lightSwitchOFF)
+      pointLight.position.x = avatar.position.x;
+      lightSwitchON = false;
+      lightSwitchOFF = true;
+      break;
+    case 'l':
+    if(!lightSwitchON)
+      pointlight2.position.x = -24000;
+      lightSwitchOFF = false;
+      lightSwitchON = true;
+      break;
+    case 'k':
+    if(!lightSwitchOFF)
+      pointlight2.position.x = -24;
+      lightSwitchON = false;
+      lightSwitchOFF = true;
+      break;
+    case 'j':
+    if(!lightSwitchON)
+      pointlight3.position.x = -24000;
+      lightSwitchOFF = false;
+      lightSwitchON = true;
+      break;
+    case 'h':
+    if(!lightSwitchOFF)
+      pointlight3.position.x = -24;
+      lightSwitchON = false;
+      lightSwitchOFF = true;
+      break;
     case 'w':
       if(!isAvatarAttached)
         isAvatarMoving = true;
