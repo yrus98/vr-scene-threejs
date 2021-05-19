@@ -158,7 +158,7 @@ avatarCamera.rotation.y = Math.PI;
 avatar.add(avatarCamera);
 
 //trees
-const treeGeometry = new THREE.ConeGeometry(1.5, 5, 32);
+const treeGeometry = new THREE.ConeGeometry(2.5, 15, 32);
 const treeMaterial = new THREE.MeshPhongMaterial({map: loader.load('tree.png')});
 const treeMesh1 = new THREE.Mesh(treeGeometry, treeMaterial);
 treeMesh1.position.y = 2.5;
