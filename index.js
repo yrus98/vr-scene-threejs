@@ -37,27 +37,54 @@ const loader = new THREE.TextureLoader();
 
 //defines light, default light is directional light
 {
-  const light = new THREE.DirectionalLight(0xffffff, 1);
-  light.position.set(0, 20, 0);
-  scene.add(light);
-  light.castShadow = true;
-  light.shadow.mapSize.width = 2048;
-  light.shadow.mapSize.height = 2048;
+  //const light = new THREE.DirectionalLight(0xffffff, 1);
+  //light.position.set(0, 20, 0);
+  //scene.add(light);
+  //light.castShadow = true;
+  //light.shadow.mapSize.width = 2048;
+  //light.shadow.mapSize.height = 2048;
 
-  const d = 50;
-  light.shadow.camera.left = -d;
-  light.shadow.camera.right = d;
-  light.shadow.camera.top = d;
-  light.shadow.camera.bottom = -d;
-  light.shadow.camera.near = 1;
-  light.shadow.camera.far = 50;
-  light.shadow.bias = 0.001;
+  //const d = 50;
+  //light.shadow.camera.left = -d;
+  //light.shadow.camera.right = d;
+  //light.shadow.camera.top = d;
+  //light.shadow.camera.bottom = -d;
+  //light.shadow.camera.near = 1;
+  //light.shadow.camera.far = 50;
+  //light.shadow.bias = 0.001;
+
+  var spotlight = new THREE.SpotLight( 0x00ffff, 1.5, 600, 1.4, 0.4, 2 );
+  spotlight.position.set(24,5,24);
+  spotlight.castShadow = true; // default false
+  scene.add( spotlight );
+
+  //Set up shadow properties for the light
+  spotlight.shadow.mapSize.width = 512; // default
+  spotlight.shadow.mapSize.height = 512; // default
+  spotlight.shadow.camera.near = 0.5; // default
+  spotlight.shadow.camera.far = 500; // default
+  spotlight.shadow.focus = 1; // default
+
+  var pointLight = new THREE.PointLight(0x8B008B);
+  
+  const pointlight2 = new THREE.PointLight( 0xFFFFFF);
+  pointlight2.position.set(-24,3,24);
+  pointlight2.castShadow = true;
+  scene.add(pointlight2);
+
+  const pointlight3 = new THREE.PointLight( 0xFFFFFF);
+  pointlight3.position.set(-24,4,-24);
+  pointlight3.castShadow = false;
+  scene.add(pointlight3);
+  
+
 }
 
+
 {
-  const light = new THREE.DirectionalLight(0xffffff, 1);
+  const light = new THREE.DirectionalLight(0x000000, 1);
   light.position.set(1, 2, 4);
-  scene.add(light);
+  //scene.add(light);
 }
 
 //ground mesh and its geometry and texture
@@ -156,6 +183,8 @@ const avatarCamera = makeCamera(avatarFov);
 avatarCamera.position.y = 4;
 avatarCamera.rotation.y = Math.PI;
 avatar.add(avatarCamera);
+pointLight.position.copy(avatar.position);
+avatarCamera.add(pointLight);
 
 //trees
 const treeGeometry = new THREE.ConeGeometry(2.5, 15, 32);
@@ -483,6 +512,9 @@ function render(time) {
   renderer.render(scene, camera.cam);
 
   requestAnimationFrame(render);
+  var av = scene.getObjectByName('avatar');
+  spotlight.target = av;
+
 }
 
 window.addEventListener('keydown', function (event){

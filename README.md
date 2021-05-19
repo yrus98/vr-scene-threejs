@@ -16,6 +16,8 @@
 
 `f` : Attach to train
 
+`click` : Change avatar's appearance
+
 ### Camera controls
 `c` : Toggle Camera [Fixed / Avatar POV]
 
