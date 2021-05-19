@@ -190,30 +190,30 @@ avatarCamera.add(pointLight);
 const treeGeometry = new THREE.ConeGeometry(2.5, 15, 32);
 const treeMaterial = new THREE.MeshPhongMaterial({map: loader.load('tree.png')});
 const treeMesh1 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh1.position.y = 2.5;
-treeMesh1.position.x = 24;
-treeMesh1.position.z = 24;
+treeMesh1.position.y = 7.5;
+treeMesh1.position.x = 25;
+treeMesh1.position.z = 25;
 treeMesh1.castShadow = true;
 scene.add(treeMesh1);
 
 const treeMesh2 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh2.position.y = 2.5;
-treeMesh2.position.x = -24;
-treeMesh2.position.z = 24;
+treeMesh2.position.y =7.5;
+treeMesh2.position.x = -25;
+treeMesh2.position.z = 25;
 treeMesh2.castShadow = true;
 scene.add(treeMesh2);
 
 const treeMesh3 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh3.position.y = 2.5;
-treeMesh3.position.x = 24;
-treeMesh3.position.z = -24;
+treeMesh3.position.y = 7.5;
+treeMesh3.position.x = 25;
+treeMesh3.position.z = -25;
 treeMesh3.castShadow = true;
 scene.add(treeMesh3);
 
 const treeMesh4 = new THREE.Mesh(treeGeometry, treeMaterial);
-treeMesh4.position.y = 2.5;
-treeMesh4.position.x = -24;
-treeMesh4.position.z = -24;
+treeMesh4.position.y = 7.5;
+treeMesh4.position.x = -25;
+treeMesh4.position.z = -25;
 treeMesh4.castShadow = true;
 scene.add(treeMesh4);
 
